@@ -1,29 +1,18 @@
 import subprocess
-import sys
-
-print("=" * 35)
-print("     Starting Deployment")
-print("=" * 35)
-
+print("=================================")
+print(" Starting Deployment")
+print("=================================")
 try:
-    process = subprocess.Popen(
-        [sys.executable, "app.py"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+    result = subprocess.run(
+        ["python3", "app.py"],
+        check=True,
+        capture_output=True,
         text=True
     )
-
-    stdout, stderr = process.communicate()
-
-    if process.returncode == 0:
-        print(stdout)
-        print("=" * 35)
-        print("     Deployment Successful")
-        print("=" * 35)
-    else:
-        print("Deployment Failed!")
-        print(stderr)
-
-except Exception as error:
-    print("An unexpected error occurred:")
-    print(error)
+    print(result.stdout)
+    print("=================================")
+    print(" Deployment Successful")
+    print("=================================")
+except subprocess.CalledProcessError as e:
+    print("Deployment Failed!")
+    print(e.stderr)
